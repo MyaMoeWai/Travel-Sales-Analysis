@@ -6,7 +6,6 @@ Built a complete analytics workflow from database design to dashboard visualizat
 
 - **Excel**
 - **MySQL**, **SQL**
-- **Python**
 - **Looker Studio**
 
 ## 📈 Project Highlights
