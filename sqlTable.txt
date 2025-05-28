@@ -1,0 +1,62 @@
+CREATE TABLE countries (
+    country_id INT AUTO_INCREMENT PRIMARY KEY,
+    country_name VARCHAR(100) UNIQUE
+);
+
+
+CREATE TABLE cities (
+    city_id INT AUTO_INCREMENT PRIMARY KEY,
+    city_name VARCHAR(100),
+    country_id INT,
+    FOREIGN KEY (country_id) REFERENCES countries(country_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(255) UNIQUE,
+    phone_number VARCHAR(15),
+    city_id INT,
+    registration_date DATE,
+    FOREIGN KEY (city_id) REFERENCES cities(city_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(255),
+    product_type ENUM('Flight', 'Hotel', 'Bus', 'Train', 'Car Rental', 'Trip Package'),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE reservations (
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    reservation_date DATE,
+    status ENUM('Pending', 'Confirmed', 'Cancelled'),
+    total_price DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE sales (
+    sale_id INT AUTO_INCREMENT PRIMARY KEY,
+    reservation_id INT,
+    sale_date DATE,
+    sale_amount DECIMAL(10, 2),
+    payment_id INT,  -- Payment ID added to link to payment methods
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (payment_id) REFERENCES payment(payment_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+CREATE TABLE payment (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,  
+    payment_name VARCHAR(50) NOT NULL 
+);
